@@ -113,7 +113,9 @@
 
   <!-- Control -->
   <group if="$(var launch_control)">
-    <include file="$(find-pkg-share autoware_launch)/launch/components/tier4_control_component.launch.xml"/>
+    <include file="$(find-pkg-share autoware_launch)/launch/components/tier4_control_component.launch.xml">
+      <arg name ="lateral_controller_mode" value="pure_pursuit"/>
+    </include>
   </group>
 
   <!-- API -->
