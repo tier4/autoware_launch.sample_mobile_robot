@@ -7,6 +7,10 @@
   <arg name="localization_pointcloud_container_name" default="/pointcloud_container" description="The target container to which pointcloud preprocessing nodes in localization be attached"/>
   <arg name="initial_pose" default="[]" description="initial pose (x, y, z, quat_x, quat_y, quat_z, quat_w)"/>
 
+  <arg name="environment" default="outdoor" description="Driving environment. indoor, outdoor"/>
+  <let name="ndt_config_path" if="$(eval &quot;'$(var environment)'=='outdoor'&quot;)" value="$(var loc_config_path)/ndt_scan_matcher/outdoor"/>
+  <let name="ndt_config_path" if="$(eval &quot;'$(var environment)'=='indoor'&quot;)" value="$(var loc_config_path)/ndt_scan_matcher/indoor"/>
+
   <group>
     <include file="$(find-pkg-share tier4_localization_launch)/launch/localization.launch.xml">
       <arg name="pose_source" value="$(var pose_source)"/>
@@ -24,18 +28,18 @@
       <arg name="twist2accel_param_path" value="$(var loc_config_path)/twist2accel.param.yaml"/>
 
       <!-- parameter paths for ndt -->
-      <arg name="ndt_scan_matcher/ndt_scan_matcher_param_path" value="$(var loc_config_path)/ndt_scan_matcher/ndt_scan_matcher.param.yaml"/>
+      <arg name="ndt_scan_matcher/ndt_scan_matcher_param_path" value="$(var ndt_config_path)/ndt_scan_matcher.param.yaml"/>
       <arg
         name="ndt_scan_matcher/pointcloud_preprocessor/crop_box_filter_measurement_range_param_path"
-        value="$(var loc_config_path)/ndt_scan_matcher/pointcloud_preprocessor/crop_box_filter_measurement_range.param.yaml"
+        value="$(var ndt_config_path)/pointcloud_preprocessor/crop_box_filter_measurement_range.param.yaml"
       />
       <arg
         name="ndt_scan_matcher/pointcloud_preprocessor/voxel_grid_downsample_filter_param_path"
-        value="$(var loc_config_path)/ndt_scan_matcher/pointcloud_preprocessor/voxel_grid_filter.param.yaml"
+        value="$(var ndt_config_path)/pointcloud_preprocessor/voxel_grid_filter.param.yaml"
       />
       <arg
         name="ndt_scan_matcher/pointcloud_preprocessor/random_downsample_filter_param_path"
-        value="$(var loc_config_path)/ndt_scan_matcher/pointcloud_preprocessor/random_downsample_filter.param.yaml"
+        value="$(var ndt_config_path)/pointcloud_preprocessor/random_downsample_filter.param.yaml"
       />
 
       <!-- parameter paths for yabloc -->
