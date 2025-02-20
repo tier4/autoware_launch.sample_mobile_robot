@@ -1,7 +1,7 @@
 /**:
   ros__parameters:
-    use_pointcloud: false # use pointcloud as obstacle check
-    use_dynamic_object: true # use dynamic object as obstacle check
+    use_pointcloud: true # use pointcloud as obstacle check
+    use_dynamic_object: false # use dynamic object as obstacle check
     collision_distance: 0.1 # Distance at which an object is determined to have collided with ego [m]
     nearby_filter_radius: 5.0 # Radius to filter nearby objects [m]
     keep_ignoring_time: 10.0 # Time to keep filtering objects that first appeared in the vicinity
