@@ -2,6 +2,7 @@ files:
   - { path: $(dirname)/map.yaml }
   - { path: $(dirname)/localization.yaml }
   - { path: $(dirname)/planning.yaml }
+  - { path: $(dirname)/sensing.yaml }
   - { path: $(dirname)/perception.yaml }
   - { path: $(dirname)/control.yaml }
   - { path: $(dirname)/vehicle.yaml }
@@ -17,6 +18,7 @@ units:
       - { type: link, link: /autoware/map }
       - { type: link, link: /autoware/localization }
       - { type: link, link: /autoware/planning }
+      - { type: link, link: /autoware/sensing }
       - { type: link, link: /autoware/perception }
       - { type: link, link: /autoware/control }
       - { type: link, link: /autoware/vehicle }
@@ -48,6 +50,7 @@ units:
       - { type: link, link: /autoware/map }
       - { type: link, link: /autoware/localization }
       - { type: link, link: /autoware/planning }
+      - { type: link, link: /autoware/sensing }
       - { type: link, link: /autoware/perception }
       - { type: link, link: /autoware/control }
       - { type: link, link: /autoware/vehicle }
@@ -59,6 +62,7 @@ units:
       - { type: link, link: /autoware/map }
       - { type: link, link: /autoware/localization }
       - { type: link, link: /autoware/planning }
+      - { type: link, link: /autoware/sensing }
       - { type: link, link: /autoware/perception }
       - { type: link, link: /autoware/control }
       - { type: link, link: /autoware/vehicle }
