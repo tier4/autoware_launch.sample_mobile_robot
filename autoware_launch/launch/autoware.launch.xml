@@ -120,6 +120,7 @@
   <group if="$(var launch_control)">
     <include file="$(find-pkg-share autoware_launch)/launch/components/tier4_control_component.launch.xml">
       <arg name ="lateral_controller_mode" value="pure_pursuit"/>
+      <arg name="enable_autonomous_emergency_braking" value="false"/>
     </include>
   </group>
 

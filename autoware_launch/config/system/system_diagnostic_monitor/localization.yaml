@@ -28,9 +28,11 @@ units:
     name: localization_topic_status
 
   - path: /autoware/localization/scan_matching_status
-    type: diag
-    node: ndt_scan_matcher
-    name: scan_matching_status
+    type: warn-to-ok
+    item:
+      type: diag
+      node: ndt_scan_matcher
+      name: scan_matching_status
 
   - path: /autoware/localization/accuracy
     type: diag
