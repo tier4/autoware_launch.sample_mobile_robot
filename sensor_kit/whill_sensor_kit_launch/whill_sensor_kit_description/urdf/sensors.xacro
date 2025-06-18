@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<robot name="vehicle" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:arg name="config_dir" default="$(find whill_sensor_kit_description)/config"/>
+  <xacro:arg name="gpu" default="false"/>
+
+  <xacro:include filename="$(find imu_description)/urdf/imu.xacro"/>
+  <xacro:property name="calibration" value="${xacro.load_yaml('$(arg config_dir)/sensors_calibration.yaml')}"/>
+
+  <!-- sensor_kit -->
+  <xacro:include filename="sensor_kit.xacro"/>
+  <xacro:sensor_kit_macro
+    parent="base_link"
+    x="${calibration['base_link']['sensor_kit_base_link']['x']}"
+    y="${calibration['base_link']['sensor_kit_base_link']['y']}"
+    z="${calibration['base_link']['sensor_kit_base_link']['z']}"
+    roll="${calibration['base_link']['sensor_kit_base_link']['roll']}"
+    pitch="${calibration['base_link']['sensor_kit_base_link']['pitch']}"
+    yaw="${calibration['base_link']['sensor_kit_base_link']['yaw']}"
+  />
+
+  <!-- imu -->
+  <xacro:imu_macro
+    parent="base_link"
+    name="imu"
+    namespace=""
+    x="${calibration['base_link']['imu_link']['x']}"
+    y="${calibration['base_link']['imu_link']['y']}"
+    z="${calibration['base_link']['imu_link']['z']}"
+    roll="${calibration['base_link']['imu_link']['roll']}"
+    pitch="${calibration['base_link']['imu_link']['pitch']}"
+    yaw="${calibration['base_link']['imu_link']['yaw']}"
+    fps="100"
+  />
+</robot>
