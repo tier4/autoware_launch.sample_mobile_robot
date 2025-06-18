@@ -1,0 +1,73 @@
+<launch>
+
+  <!-- Params -->
+  <arg name="launch_driver" default="true"/>
+
+  <arg name="model" default="PandarXT32"/>
+  <arg name="sensor_frame" default="pandar"/>
+  <arg name="return_mode" default="Strongest"/>
+  <arg name="sensor_ip" default="192.168.1.201"/>
+  <arg name="multicast_ip" default=""/>
+  <arg name="host_ip" default="192.168.1.100"/>
+  <arg name="data_port" default="2368"/>
+  <arg name="gnss_port" default="2380"/>
+  <arg name="packet_mtu_size" default="1500" description="Packet MTU size"/>
+  <arg name="rotation_speed" default="600" description="Motor RPM, the sensor's internal spin rate."/>
+  <arg name="scan_phase" default="0.0"/>
+  <arg name="cloud_min_angle" default="30.0"/>
+  <arg name="cloud_max_angle" default="360.0"/>
+  <arg name="min_range" default="0.3"/>
+  <arg name="max_range" default="300.0"/>
+  <arg name="cut_angle" default="0.0"/>
+  <arg name="sync_angle" default="0"/>
+  <arg name="dual_return_distance_threshold" default="0.1"/>
+  <arg name="vehicle_mirror_param_file"/>
+  <arg name="use_pointcloud_container" default="false"/>
+  <arg name="container_name" default="hesai_node_container"/>
+  <arg name="diag_span" default="1000" description="milliseconds"/>
+  <arg name="calibration_file" default="$(find-pkg-share nebula_decoders)/calibration/hesai/$(var model).csv" description="path to lidar's calibration file"/>
+  <arg name="ptp_profile" default="1588v2"/>
+  <arg name="ptp_domain" default="0"/>
+  <arg name="ptp_transport_type" default="UDP"/>
+  <arg name="ptp_switch_type" default="TSN"/>
+  <arg name="ptp_lock_threshold" default="100"/>
+  <arg name="launch_hw" default="true"/>
+  <arg name="setup_sensor" default="true"/>
+  <arg name="retry_hw" default="true"/>
+
+  <include file="$(find-pkg-share sensor_model)_launch/launch/nebula_node_container.launch.py">
+    <arg name="launch_driver" value="$(var launch_driver)"/>
+    <arg name="sensor_model" value="$(var model)"/>
+    <arg name="return_mode" value="$(var return_mode)"/>
+    <arg name="frame_id" value="$(var sensor_frame)"/>
+    <arg name="sensor_ip" value="$(var sensor_ip)"/>
+    <arg name="multicast_ip" value="$(var multicast_ip)"/>
+    <arg name="host_ip" value="$(var host_ip)"/>
+    <arg name="data_port" value="$(var data_port)"/>
+    <arg name="gnss_port" value="$(var gnss_port)"/>
+    <arg name="packet_mtu_size" value="$(var packet_mtu_size)"/>
+    <arg name="rotation_speed" value="$(var rotation_speed)"/>
+    <arg name="scan_phase" value="$(var scan_phase)"/>
+    <arg name="cloud_min_angle" value="$(var cloud_min_angle)"/>
+    <arg name="cloud_max_angle" value="$(var cloud_max_angle)"/>
+    <arg name="min_range" value="$(var min_range)"/>
+    <arg name="max_range" value="$(var max_range)"/>
+    <arg name="cut_angle" value="$(var cut_angle)"/>
+    <arg name="sync_angle" value="$(var sync_angle)"/>
+    <arg name="dual_return_distance_threshold" value="$(var dual_return_distance_threshold)"/>
+    <arg name="vehicle_mirror_param_file" value="$(var vehicle_mirror_param_file)"/>
+    <arg name="use_intra_process" value="true"/>
+    <arg name="use_multithread" value="true"/>
+    <arg name="use_pointcloud_container" value="$(var use_pointcloud_container)"/>
+    <arg name="container_name" value="$(var container_name)"/>
+    <arg name="calibration_file" value="$(var calibration_file)"/>
+    <arg name="ptp_profile" value="$(var ptp_profile)"/>
+    <arg name="ptp_domain" value="$(var ptp_domain)"/>
+    <arg name="ptp_transport_type" value="$(var ptp_transport_type)"/>
+    <arg name="ptp_switch_type" value="$(var ptp_switch_type)"/>
+    <arg name="ptp_lock_threshold" value="$(var ptp_lock_threshold)"/>
+    <arg name="launch_hw" value="$(var launch_hw)"/>
+    <arg name="setup_sensor" value="$(var setup_sensor)"/>
+    <arg name="retry_hw" value="$(var retry_hw)"/>
+  </include>
+</launch>
