@@ -1,5 +1,5 @@
 files:
-  - { path: $(find-pkg-share sample_mobile_robot_launch)/config/system_diagnostic_monitor/sample_mobile_robot.yaml }
+  - { path: $(find-pkg-share whill_vehicle_launch)/config/system_diagnostic_monitor/vehicle_diag.yaml }
 
 units:
   - path: /autoware/vehicle
@@ -7,7 +7,7 @@ units:
     list:
       - { type: link, link: /autoware/vehicle/topic_rate_check/velocity }
       - { type: link, link: /autoware/vehicle/topic_rate_check/steering }
-      - { type: link, link: /autoware/vehicle/sample_mobile_robot }
+      - { type: link, link: /autoware/vehicle/whill_vehicle }
 
   - path: /autoware/vehicle/topic_rate_check/velocity
     type: diag

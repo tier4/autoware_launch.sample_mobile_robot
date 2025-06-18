@@ -1,9 +1,9 @@
 files:
-  - { path: $(find-pkg-share sample_mobile_robot_sensor_launch)/config/system_diagnostic_monitor/sensor_kit_diag.yaml }
+  - { path: $(find-pkg-share whill_sensor_kit_launch)/config/system_diagnostic_monitor/sensor_kit_diag.yaml }
 
 units:
   - path: /autoware/sensing
     type: and
     list:
-      - { type: link, link: /autoware/sensing/sample_mobile_robot_sensor }
+      - { type: link, link: /autoware/sensing/whill_sensor_kit }
 

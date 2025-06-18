@@ -1,0 +1,28 @@
+units:
+  - path: /autoware/sensing/whill_sensor_kit
+    type: and
+    list:
+      - {type: link, link: /autoware/sensing/camera/connection}
+      - {type: link, link: /autoware/sensing/lidar/top/connection}
+      - {type: link, link: /autoware/sensing/imu/connection}
+
+# camera
+  - path: /autoware/sensing/camera/connection
+    type: diag
+    node: topic_state_monitor_camera
+    name: camera_topic_status
+    timeout: 1.0
+
+# top lidar
+  - path: /autoware/sensing/lidar/top/connection
+    type: diag
+    node: topic_state_monitor_lidar_top
+    name: lidar_top_topic_status
+    timeout: 1.0
+
+# IMU
+  - path: /autoware/sensing/imu/connection
+    type: diag
+    node: topic_state_monitor_imu
+    name: imu_topic_status
+    timeout: 1.0

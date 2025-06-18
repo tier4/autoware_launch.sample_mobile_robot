@@ -1,0 +1,10 @@
+units:
+  - path: /autoware/vehicle/whill_vehicle
+    type: and
+    list:
+      - {type: link, link: /autoware/vehicle/whill_vehicle/test}
+
+  - path: /autoware/vehicle/whill_vehicle/test
+    type: diag
+    node: test
+    name: test
