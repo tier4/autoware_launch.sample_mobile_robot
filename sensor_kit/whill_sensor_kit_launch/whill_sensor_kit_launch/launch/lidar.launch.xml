@@ -9,7 +9,7 @@
 
     <group>
       <push-ros-namespace namespace="top"/>
-      <include file="$(find-pkg-share sensor_model)_launch/launch/hesai_XT32.launch.xml">
+      <include file="whill_sensor_kit_launch/launch/hesai_XT32.launch.xml">
         <arg name="sensor_frame" value="xt32_top"/>
         <arg name="sensor_ip" value="192.168.1.201"/>
         <arg name="host_ip" value="192.168.1.100"/>
@@ -24,7 +24,7 @@
       </include>
     </group>
 
-    <!-- <include file="$(find-pkg-share sensor_model)_launch/launch/pointcloud_preprocessor.launch.py">
+    <!-- <include file="whill_sensor_kit_launch/launch/pointcloud_preprocessor.launch.py">
       <arg name="base_frame" value="base_link"/>
       <arg name="use_intra_process" value="false"/>
       <arg name="use_multithread" value="false"/>

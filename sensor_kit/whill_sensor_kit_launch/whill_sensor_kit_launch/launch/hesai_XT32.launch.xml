@@ -35,7 +35,7 @@
   <arg name="setup_sensor" default="true"/>
   <arg name="retry_hw" default="true"/>
 
-  <include file="$(find-pkg-share sensor_model)_launch/launch/nebula_node_container.launch.py">
+  <include file="$whill_sensor_kit_launch/launch/nebula_node_container.launch.py">
     <arg name="launch_driver" value="$(var launch_driver)"/>
     <arg name="sensor_model" value="$(var model)"/>
     <arg name="return_mode" value="$(var return_mode)"/>
