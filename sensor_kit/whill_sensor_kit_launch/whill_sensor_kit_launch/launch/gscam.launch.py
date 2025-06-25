@@ -90,25 +90,19 @@ def launch_setup(context, *args, **kwargs):
             ],
             extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
         ),
-        # ComposableNode(
-        #     package="sensor_trigger",
-        #     plugin="sensor_trigger::SensorTrigger",
-        #     name=["camera", LaunchConfiguration("camera_id"), "_trigger"],
-        #     namespace=LaunchConfiguration("gscam_namespace"),
-        #     remappings=[
-        #         ("trigger_time", ["camera", LaunchConfiguration("camera_id"), "/trigger_time"]),
-        #     ],
-        #     parameters=[
-        #         load_composable_node_param("camera_trigger_param_path"),
-        #     ],
-        #     extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
-        # ),
         ComposableNode(
             package="image_proc",
             plugin="image_proc::RectifyNode",
-            name=["camera", LaunchConfiguration("camera_id"), "color_rectify_node"],
+            name=["camera", LaunchConfiguration("camera_id"), "_color_rectify_node"],
             namespace=LaunchConfiguration("gscam_namespace"),
             remappings=[
+                ("camera_info",
+                    [
+                        "camera",
+                        LaunchConfiguration("camera_id"),
+                        "/camera_info"
+                    ],
+                ),
                 ("image",
                     [
                         "camera",
@@ -124,6 +118,32 @@ def launch_setup(context, *args, **kwargs):
                         "/image_rect_color",
                     ],
                 ),
+                ("image_rect/compressed",
+                    [
+                        "camera",
+                        LaunchConfiguration("camera_id"),
+                        "/image_rect_color/compressed",
+                    ],
+                ),
+                ("image_rect_compressedDepth",
+                    [
+                        "camera",
+                        LaunchConfiguration("camera_id"),
+                        "/image_rect_color/compressedDepth",
+                    ],
+                ),
+                ("image_rect/theora",
+                    [
+                        "camera",
+                        LaunchConfiguration("camera_id"),
+                        "/image_rect_color/theora",
+                    ],
+                ),
+            ],
+            parameters=[
+                {
+                    "image_transport": LaunchConfiguration("image_transport"),
+                },
             ],
             extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
         ),
@@ -166,11 +186,13 @@ def generate_launch_description():
 
     add_launch_arg("camera_info_url")
 
-    add_launch_arg("camera_trigger_param_path")
+    # add_launch_arg("camera_trigger_param_path")
 
     add_launch_arg("use_intra_process", "True")
 
     add_launch_arg("use_sensor_data_qos", "True")
+
+    add_launch_arg("image_transport", "raw")
 
     return LaunchDescription(
         [
