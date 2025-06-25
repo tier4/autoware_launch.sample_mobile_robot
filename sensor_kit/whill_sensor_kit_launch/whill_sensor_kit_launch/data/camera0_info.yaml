@@ -1,0 +1,21 @@
+image_width: 1920
+image_height: 1280
+camera_name: camera0
+camera_matrix:
+  rows: 3
+  cols: 3
+  data: [851.97145, 0.0, 956.01527, 0.0, 905.89366, 645.9693, 0.0, 0.0, 1.0]
+distortion_model: rational_polynomial
+distortion_coefficients:
+  rows: 1
+  cols: 8
+  data: [-0.06608, -0.13049, -0.00074, -0.0025, -0.00162, 0.09042, -0.16932, -0.01124]
+projection_matrix:
+  rows: 3
+  cols: 4
+  data: [688.23486, 0.0, 935.94601, 0.0, 0.0, 835.47577, 645.07395, 0.0, 0.0, 0.0,
+    1.0, 0.0]
+rectification_matrix:
+  rows: 3
+  cols: 3
+  data: [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]

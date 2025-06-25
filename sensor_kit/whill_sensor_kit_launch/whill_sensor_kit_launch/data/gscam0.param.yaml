@@ -1,7 +1,8 @@
 /**:
   ros__parameters:
     frame_id: "camera0/camera_optical_link"
-    gscam_config: ""
+    gscam_config: "udpsrc port=5004 ! application/x-rtp, sampling=YCbCr-4:2:2, depth=(string)8, width=(string)1920, height=(string)1280 ! rtpvrawdepay ! videoconvert ! queue"
     use_gst_timestamps: True
     sync_sink: False
-    camera.image_raw.jpeg_quality: 80
+    # camera.image_raw.jpeg_quality: 80
+    image_encoding: "rgb8"
