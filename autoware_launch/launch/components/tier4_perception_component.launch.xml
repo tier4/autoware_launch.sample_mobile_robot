@@ -22,12 +22,15 @@
   <arg name="lidar_detection_model" default="centerpoint" description="If the model name is not declared, the default model in perception.launch.xml will be used"/>
   <arg name="all_traffic_light_camera" default="[camera6, camera7]" description="choose camera which use for traffic light recognition"/>
 
+  <arg name="input/pointcloud" default="/sensing/lidar/concatenated/pointcloud"/>
+
   <include file="$(find-pkg-share tier4_perception_launch)/launch/perception.launch.xml">
     <!-- Options to Switch Launch Function/Module -->
     <arg name="mode" value="$(var perception_mode)"/>
     <arg name="lidar_detection_model" value="$(var lidar_detection_model)"/>
     <arg name="vehicle_param_file" value="$(find-pkg-share $(var vehicle_model)_description)/config/vehicle_info.param.yaml"/>
 
+    <arg name="input/pointcloud" value="$(var input/pointcloud)"/>
     <arg name="pointcloud_container_name" value="$(var pointcloud_container_name)"/>
     <arg name="occupancy_grid_map_method" value="$(var occupancy_grid_map_method)_occupancy_grid_map"/>
     <arg name="occupancy_grid_map_updater" value="$(var occupancy_grid_map_updater)"/>
@@ -53,6 +56,7 @@
     <arg name="all_traffic_light_camera" value="$(var all_traffic_light_camera)"/>
 
     <!-- object recognition parameters -->
+    <arg name="image_number" value="1"/>
     <arg
       name="object_recognition_detection_euclidean_cluster_param_path"
       value="$(find-pkg-share autoware_launch)/config/perception/object_recognition/detection/clustering/euclidean_cluster.param.yaml"
