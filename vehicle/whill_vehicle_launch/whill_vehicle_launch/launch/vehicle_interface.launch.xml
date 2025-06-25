@@ -1,5 +1,10 @@
-
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
-  <arg name="vehicle_id" default="$(env VEHICLE_ID default)"/>
+  <node pkg="whill_driver" exec="whill" name="whill" output="log">
+    <param name="port_name" value="/dev/ttyS0"/>
+    <param name="publish_interval_ms" value="50"/>
+  </node>
+
+  <include file="$(find-pkg-share autoware_ros2_whill_adapter)/launch/autoware_ros2_whill_adapter.launch.xml">
+  </include>
 </launch>
