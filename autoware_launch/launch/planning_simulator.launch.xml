@@ -32,6 +32,7 @@
   <arg name="rviz_config" default="$(find-pkg-share autoware_launch)/rviz/$(var rviz_config_name)" description="rviz config path"/>
   <let name="rviz_respawn" value="false" if="$(var scenario_simulation)"/>
   <let name="rviz_respawn" value="true" unless="$(var scenario_simulation)"/>
+  <arg name="joy_controller" default="false"/>
   <!-- Vcu emulation -->
   <arg name="vehicle_simulation" default="true" description="use vehicle simulation"/>
   <!-- Auto mode setting-->
@@ -76,6 +77,7 @@
       <arg name="rviz" value="$(var rviz)"/>
       <arg name="rviz_config" value="$(var rviz_config)"/>
       <arg name="rviz_respawn" value="$(var rviz_respawn)"/>
+      <arg name="joy_controller" value="$(var joy_controller)"/>
       <!-- Auto mode setting-->
       <arg name="enable_all_modules_auto_mode" value="$(var enable_all_modules_auto_mode)"/>
       <arg name="is_simulation" value="true"/>
