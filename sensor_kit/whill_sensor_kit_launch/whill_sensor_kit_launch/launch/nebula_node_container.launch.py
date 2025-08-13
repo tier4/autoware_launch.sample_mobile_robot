@@ -91,25 +91,7 @@ def launch_setup(context, *args, **kwargs):
         sensor_calib_fp
     ), "Sensor calib file under calibration/ was not found: {}".format(sensor_calib_fp)
 
-    # Pointcloud preprocessor parameters
-    distortion_corrector_node_param = ParameterFile(
-        param_file=LaunchConfiguration("distortion_correction_node_param_path").perform(context),
-        allow_substs=True,
-    )
-    ring_outlier_filter_node_param = ParameterFile(
-        param_file=LaunchConfiguration("ring_outlier_filter_node_param_path").perform(context),
-        allow_substs=True,
-    )
-
     nodes = []
-
-    nodes.append(
-        ComposableNode(
-            package="glog_component",
-            plugin="GlogComponent",
-            name="glog_component",
-        )
-    )
 
     nodes.append(
         ComposableNode(
@@ -142,6 +124,8 @@ def launch_setup(context, *args, **kwargs):
                         "ptp_transport_type",
                         "ptp_switch_type",
                         "ptp_domain",
+                        "ptp_lock_threshold",
+                        "udp_only",
                         "diag_span",
                         "setup_sensor",
                         "retry_hw",
@@ -150,13 +134,12 @@ def launch_setup(context, *args, **kwargs):
             ],
             remappings=[
                 ("pandar_points", "pointcloud_raw_ex"),
-                ("velodyne_points", "pointcloud_raw_ex"),
             ],
             extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
         )
     )
 
-    cropbox_parameters = create_parameter_dict("input_frame", "output_frame")
+    cropbox_parameters = create_parameter_dict("input_pointcloud_frame", "input_frame", "output_frame", "processing_time_threshold_sec")
     cropbox_parameters["negative"] = True
 
     vehicle_info = get_vehicle_info(context)
@@ -169,8 +152,8 @@ def launch_setup(context, *args, **kwargs):
 
     nodes.append(
         ComposableNode(
-            package="autoware_pointcloud_preprocessor",
-            plugin="autoware::pointcloud_preprocessor::CropBoxFilterComponent",
+            package="autoware_crop_box_filter",
+            plugin="autoware::crop_box_filter::CropBoxFilter",
             name="crop_box_filter_self",
             remappings=[
                 ("input", "pointcloud_raw_ex"),
@@ -191,51 +174,15 @@ def launch_setup(context, *args, **kwargs):
 
     nodes.append(
         ComposableNode(
-            package="autoware_pointcloud_preprocessor",
-            plugin="autoware::pointcloud_preprocessor::CropBoxFilterComponent",
+            package="autoware_crop_box_filter",
+            plugin="autoware::crop_box_filter::CropBoxFilter",
             name="crop_box_filter_mirror",
             remappings=[
                 ("input", "self_cropped/pointcloud_ex"),
-                ("output", "mirror_cropped/pointcloud_ex"),
+                ("output", "concatenated/pointcloud"),
+                #("output", "mirror_cropped/pointcloud_ex"),
             ],
             parameters=[cropbox_parameters],
-            extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
-        )
-    )
-
-    nodes.append(
-        ComposableNode(
-            package="autoware_pointcloud_preprocessor",
-            plugin="autoware::pointcloud_preprocessor::DistortionCorrectorComponent",
-            name="distortion_corrector_node",
-            remappings=[
-                ("~/input/twist", "/sensing/vehicle_velocity_converter/twist_with_covariance"),
-                ("~/input/imu", "/sensing/imu/imu_data"),
-                ("~/input/pointcloud", "mirror_cropped/pointcloud_ex"),
-                ("~/output/pointcloud", "rectified/pointcloud_ex"),
-            ],
-            parameters=[distortion_corrector_node_param],
-            extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
-        )
-    )
-
-    # Ring Outlier Filter is the last component in the pipeline, so control the output frame here
-    if LaunchConfiguration("output_as_sensor_frame").perform(context).lower() == "true":
-        ring_outlier_output_frame = {"output_frame": LaunchConfiguration("frame_id")}
-    else:
-        # keep the output frame as the input frame
-        ring_outlier_output_frame = {"output_frame": ""}
-
-    nodes.append(
-        ComposableNode(
-            package="autoware_pointcloud_preprocessor",
-            plugin="autoware::pointcloud_preprocessor::RingOutlierFilterComponent",
-            name="ring_outlier_filter",
-            remappings=[
-                ("input", "rectified/pointcloud_ex"),
-                ("output", "pointcloud_before_sync"),
-            ],
-            parameters=[ring_outlier_filter_node_param, ring_outlier_output_frame],
             extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
         )
     )
@@ -250,38 +197,7 @@ def launch_setup(context, *args, **kwargs):
         output="both",
     )
 
-    blockage_diag_component = ComposableNode(
-        package="autoware_pointcloud_preprocessor",
-        plugin="autoware::pointcloud_preprocessor::BlockageDiagComponent",
-        name="blockage_diag",
-        remappings=[
-            ("input", "pointcloud_raw_ex"),
-            ("output", "blockage_diag/pointcloud"),
-        ],
-        parameters=[
-            {
-                "angle_range": [
-                    float(context.perform_substitution(LaunchConfiguration("cloud_min_angle"))),
-                    float(context.perform_substitution(LaunchConfiguration("cloud_max_angle"))),
-                ],
-                "horizontal_ring_id": LaunchConfiguration("horizontal_ring_id"),
-                "vertical_bins": LaunchConfiguration("vertical_bins"),
-                "is_channel_order_top2down": LaunchConfiguration("is_channel_order_top2down"),
-                "max_distance_range": LaunchConfiguration("max_range"),
-                "horizontal_resolution": LaunchConfiguration("horizontal_resolution"),
-            }
-        ]
-        + [load_composable_node_param("blockage_diagnostics_param_file")],
-        extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
-    )
-
-    blockage_diag_loader = LoadComposableNodes(
-        composable_node_descriptions=[blockage_diag_component],
-        target_container=container,
-        condition=IfCondition(LaunchConfiguration("enable_blockage_diag")),
-    )
-
-    return [container, blockage_diag_loader]
+    return [container]
 
 
 def generate_launch_description():
@@ -292,8 +208,6 @@ def generate_launch_description():
         launch_arguments.append(
             DeclareLaunchArgument(name, default_value=default_value, description=description)
         )
-
-    common_sensor_share_dir = get_package_share_directory("common_sensor_launch")
 
     add_launch_arg("sensor_model", description="sensor model name")
     add_launch_arg("launch_driver", "True", "do launch driver")
@@ -317,9 +231,12 @@ def generate_launch_description():
     add_launch_arg("ptp_transport_type", "UDP")
     add_launch_arg("ptp_switch_type", "TSN")
     add_launch_arg("ptp_domain", "0")
+    add_launch_arg("ptp_lock_threshold", "100")
+    add_launch_arg("udp_only", "false")
     add_launch_arg("diag_span", "1000")
     add_launch_arg("setup_sensor", "true")
     add_launch_arg("retry_hw", "true")
+    add_launch_arg("processing_time_threshold_sec", "0.01")
     add_launch_arg("output_as_sensor_frame", "True", "output final pointcloud in sensor frame")
     add_launch_arg("enable_blockage_diag", "false")
     add_launch_arg("horizontal_ring_id", "64")
@@ -327,43 +244,13 @@ def generate_launch_description():
     add_launch_arg("is_channel_order_top2down", "true")
     add_launch_arg("horizontal_resolution", "0.4")
     add_launch_arg("base_frame", "base_link", "base frame id")
+    add_launch_arg("input_pointcloud_frame", LaunchConfiguration("base_frame"), "use for cropbox")
     add_launch_arg("input_frame", LaunchConfiguration("base_frame"), "use for cropbox")
     add_launch_arg("output_frame", LaunchConfiguration("base_frame"), "use for cropbox")
     add_launch_arg("use_multithread", "False", "use multithread")
     add_launch_arg("use_intra_process", "False", "use ROS 2 component container communication")
     add_launch_arg("use_pointcloud_container", "false")
     add_launch_arg("container_name", "nebula_node_container")
-    add_launch_arg(
-        "blockage_diagnostics_param_file",
-        os.path.join(
-            common_sensor_share_dir,
-            "config",
-            "blockage_diagnostics.param.yaml",
-        ),
-        description="path to parameter file of blockage diagnostics node",
-    )
-    add_launch_arg(
-        "vehicle_mirror_param_file",
-        description="path to the file of vehicle mirror position yaml",
-    )
-    add_launch_arg(
-        "distortion_correction_node_param_path",
-        os.path.join(
-            common_sensor_share_dir,
-            "config",
-            "distortion_corrector_node.param.yaml",
-        ),
-        description="path to parameter file of distortion correction node",
-    )
-    add_launch_arg(
-        "ring_outlier_filter_node_param_path",
-        os.path.join(
-            common_sensor_share_dir,
-            "config",
-            "ring_outlier_filter_node.param.yaml",
-        ),
-        description="path to parameter file of ring outlier filter node",
-    )
 
     set_container_executable = SetLaunchConfiguration(
         "container_executable",

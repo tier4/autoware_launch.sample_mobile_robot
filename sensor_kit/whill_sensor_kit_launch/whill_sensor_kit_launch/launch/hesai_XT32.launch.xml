@@ -4,6 +4,9 @@
   <arg name="launch_driver" default="true"/>
 
   <arg name="model" default="PandarXT32"/>
+  <arg name="input_pointcloud_frame" default="xt32_top_base_link"/>
+  <arg name="input_frame" default="xt32_top_base_link"/>
+  <arg name="output_frame" default="xt32_top_base_link"/>
   <arg name="sensor_frame" default="pandar"/>
   <arg name="return_mode" default="Strongest"/>
   <arg name="sensor_ip" default="192.168.1.201"/>
@@ -31,11 +34,16 @@
   <arg name="ptp_transport_type" default="UDP"/>
   <arg name="ptp_switch_type" default="TSN"/>
   <arg name="ptp_lock_threshold" default="100"/>
+  <arg name="udp_only" default="false"/>
   <arg name="launch_hw" default="true"/>
   <arg name="setup_sensor" default="true"/>
   <arg name="retry_hw" default="true"/>
+  <arg name="processing_time_threshold_sec" default="0.01"/>
 
   <include file="$(find-pkg-share whill_sensor_kit_launch)/launch/nebula_node_container.launch.py">
+    <arg name="input_pointcloud_frame" value="$(var input_pointcloud_frame)"/>
+    <arg name="input_frame" value="$(var input_frame)"/>
+    <arg name="output_frame" value="$(var output_frame)"/>
     <arg name="launch_driver" value="$(var launch_driver)"/>
     <arg name="sensor_model" value="$(var model)"/>
     <arg name="return_mode" value="$(var return_mode)"/>
@@ -66,8 +74,10 @@
     <arg name="ptp_transport_type" value="$(var ptp_transport_type)"/>
     <arg name="ptp_switch_type" value="$(var ptp_switch_type)"/>
     <arg name="ptp_lock_threshold" value="$(var ptp_lock_threshold)"/>
+    <arg name="udp_only" value="$(var udp_only)"/>
     <arg name="launch_hw" value="$(var launch_hw)"/>
     <arg name="setup_sensor" value="$(var setup_sensor)"/>
     <arg name="retry_hw" value="$(var retry_hw)"/>
+    <arg name="processing_time_threshold_sec" value="$(var processing_time_threshold_sec)"/>
   </include>
 </launch>
