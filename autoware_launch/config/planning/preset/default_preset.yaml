@@ -1,4 +1,10 @@
 launch:
+  - arg:
+      name: behavior_path_planner_type
+      default: behavior_path_planner
+    # option: behavior_path_planner
+    #         path_generator
+
   # behavior path modules
   - arg:
       name: launch_static_obstacle_avoidance
@@ -81,7 +87,7 @@ launch:
   # motion planning modules
   - arg:
       name: motion_path_smoother_type
-      default: none
+      default: elastic_band
       # option: elastic_band
       #         none
 
@@ -94,8 +100,17 @@ launch:
 
   # motion velocity planner modules
   - arg:
-      name: launch_dynamic_obstacle_stop_module
+      name: launch_obstacle_stop_module
       default: "true"
+  - arg:
+      name: launch_obstacle_slow_down_module
+      default: "true"
+  - arg:
+      name: launch_obstacle_cruise_module
+      default: "true"
+  - arg:
+      name: launch_dynamic_obstacle_stop_module
+      default: "false"
   - arg:
       name: launch_out_of_lane_module
       default: "true"
@@ -104,11 +119,14 @@ launch:
       default: "true"
 
   - arg:
-      name: motion_stop_planner_type
-      default: obstacle_stop_planner
-      # option: obstacle_stop_planner
-      #         obstacle_cruise_planner
-      #         none
+      name: launch_mvp_run_out_module
+      default: "true"
+  - arg:
+      name: launch_boundary_departure_prevention_module
+      default: "true"
+  - arg:
+      name: launch_road_user_stop_module
+      default: "true"
 
   - arg:
       name: velocity_smoother_type
@@ -125,4 +143,23 @@ launch:
   # parking modules
   - arg:
       name: launch_parking_module
+      default: "true"
+
+  # validator modules
+  - arg:
+      name: launch_latency_checker
+      default: "true"
+  - arg:
+      name: launch_trajectory_checker
+      default: "true"
+  - arg:
+      name: launch_intersection_collision_checker
+      default: "true"
+  - arg:
+      name: launch_rear_collision_checker
+      default: "true"
+
+  # other modules
+  - arg:
+      name: launch_remaining_distance_time_calculator
       default: "true"

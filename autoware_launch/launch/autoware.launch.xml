@@ -9,6 +9,7 @@
 
   <!-- launch module preset -->
   <arg name="planning_module_preset" default="default" description="planning module preset"/>
+  <arg name="control_module_preset" default="default" description="control module preset"/>
 
   <!-- Optional parameters -->
   <!-- Modules to be launched -->
@@ -36,7 +37,7 @@
   <arg name="system_run_mode" default="online" description="run mode in system"/>
   <arg name="launch_system_monitor" default="true" description="launch system monitor"/>
   <arg name="launch_dummy_diag_publisher" default="false" description="launch dummy diag publisher"/>
-  <arg name="diagnostic_graph_aggregator_graph_path" default="$(find-pkg-share autoware_launch)/config/system/diagnostic_graph_aggregator/autoware-main.yaml" description="diagnostic graph config"/>
+  <arg name="diagnostic_graph_aggregator_graph_path" default="$(find-pkg-share autoware_launch)/config/system/tier4_diagnostics/autoware-main.yaml" description="diagnostic graph config"/>
   <!-- Tools -->
   <arg name="rviz" default="true" description="launch rviz"/>
   <arg name="rviz_config_name" default="autoware.rviz" description="rviz config name"/>
@@ -44,15 +45,15 @@
   <arg name="rviz_respawn" default="true"/>
   <arg name="joy_controller" default="true"/>
   <!-- Perception -->
-  <arg name="perception_mode" default="camera_lidar_fusion" description="select perception mode. camera_lidar_radar_fusion, camera_lidar_fusion, lidar_radar_fusion, lidar, radar"/>
-  <arg name="traffic_light_recognition/enable_fine_detection" default="true" description="enable traffic light fine detection"/>
+  <arg name="perception_mode" default="lidar" description="select perception mode. camera_lidar_radar_fusion, camera_lidar_fusion, lidar_radar_fusion, lidar, radar"/>
+  <arg name="traffic_light_recognition/use_high_accuracy_detection" default="true" description="enable to use high accuracy detection for traffic light recognition"/>
   <!-- Auto mode setting-->
   <arg name="enable_all_modules_auto_mode" default="false" description="enable all module's auto mode"/>
   <arg name="is_simulation" default="false" description="Autoware's behavior will change depending on whether this is a simulation or not."/>
 
   <!-- Global parameters -->
   <group scoped="false">
-    <include file="$(find-pkg-share global_parameter_loader)/launch/global_params.launch.py">
+    <include file="$(find-pkg-share autoware_global_parameter_loader)/launch/global_params.launch.py">
       <arg name="use_sim_time" value="$(var use_sim_time)"/>
       <arg name="vehicle_model" value="$(var vehicle_model)"/>
     </include>
@@ -71,6 +72,7 @@
       <arg name="sensor_model" value="$(var sensor_model)"/>
       <arg name="vehicle_id" value="$(var vehicle_id)"/>
       <arg name="launch_vehicle_interface" value="$(var launch_vehicle_interface)"/>
+      <arg name="config_dir" value="$(find-pkg-share individual_params)/config/$(var vehicle_id)/$(var sensor_model)"/>
       <arg name="raw_vehicle_cmd_converter_param_path" value="$(find-pkg-share autoware_launch)/config/vehicle/raw_vehicle_cmd_converter/raw_vehicle_cmd_converter.param.yaml"/>
     </include>
   </group>
@@ -115,20 +117,34 @@
       <arg name="module_preset" value="$(var planning_module_preset)"/>
       <arg name="enable_all_modules_auto_mode" value="$(var enable_all_modules_auto_mode)"/>
       <arg name="is_simulation" value="$(var is_simulation)"/>
+      <arg name="use_sim_time" value="$(var use_sim_time)"/>
+      <arg name="vehicle_model" value="$(var vehicle_model)"/>
     </include>
+
+    <!-- Relay node for trajectory topic -->
+    <!-- This is a temporary addition for migration purposes. -->
+    <!-- https://github.com/orgs/autowarefoundation/discussions/5033#discussioncomment-13704802 -->
+    <node pkg="topic_tools" exec="relay" name="trajectory_relay">
+      <param name="input_topic" value="/planning/trajectory"/>
+      <param name="output_topic" value="/planning/scenario_planning/trajectory"/>
+    </node>
   </group>
 
   <!-- Control -->
   <group if="$(var launch_control)">
     <include file="$(find-pkg-share autoware_launch)/launch/components/tier4_control_component.launch.xml">
-      <arg name ="lateral_controller_mode" value="pure_pursuit"/>
-      <arg name="enable_autonomous_emergency_braking" value="false"/>
+      <arg name="module_preset" value="$(var control_module_preset)"/>
+      <arg name="use_sim_time" value="$(var use_sim_time)"/>
+      <arg name="vehicle_model" value="$(var vehicle_model)"/>
     </include>
   </group>
 
   <!-- API -->
   <group if="$(var launch_api)">
-    <include file="$(find-pkg-share autoware_launch)/launch/components/tier4_autoware_api_component.launch.xml"/>
+    <include file="$(find-pkg-share autoware_launch)/launch/components/tier4_autoware_api_component.launch.xml">
+      <arg name="use_sim_time" value="$(var use_sim_time)"/>
+      <arg name="vehicle_model" value="$(var vehicle_model)"/>
+    </include>
   </group>
 
   <!-- Tools -->
