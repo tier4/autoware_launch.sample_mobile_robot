@@ -105,10 +105,4 @@
           can_trust_orientation: false
         optional:
           name: "radar"
-          short_name: "R"
-      radar_far:
-        topic: "/perception/object_recognition/detection/radar/far_objects"
-        can_spawn_new_tracker: true
-        optional:
-          name: "radar_far"
-          short_name: "Rf"
+          short_name: "Rad"
