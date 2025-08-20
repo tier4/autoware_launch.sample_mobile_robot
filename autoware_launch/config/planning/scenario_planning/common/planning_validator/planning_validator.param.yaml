@@ -14,28 +14,9 @@
     # (For example, threshold = 1 means, even if the trajectory is invalid, Diag will not be ERROR if
     #  the next trajectory is valid.)
     diag_error_count_threshold: 0
-
     display_on_terminal: true # show error msg on terminal
 
-    thresholds:
-      interval: 100.0
-      relative_angle: 2.5  # (= 143.3 degree)
-      curvature: 2.0
-      lateral_acc: 9.8
-      longitudinal_max_acc: 9.8
-      longitudinal_min_acc: -9.8
-      steering: 1.414
-      steering_rate: 10.0
-      velocity_deviation: 100.0
-      distance_deviation: 100.0
-      longitudinal_distance_deviation: 1.0
-
-    parameters:
-      # The required trajectory length is calculated as the distance needed
-      # to stop from the current speed at this deceleration.
-      forward_trajectory_length_acceleration: -3.0
-
-      # An error is raised if the required trajectory length is less than this distance.
-      # Setting it to 0 means an error will occur if even slightly exceeding the end of the path,
-      # therefore, a certain margin is necessary.
-      forward_trajectory_length_margin: 2.0
+    # if handling type is 2 (use last valid traj with soft stop), the following parameters are used to
+    # generate soft stop trajectory
+    soft_stop_deceleration: -1.0 # [m/s^2]
+    soft_stop_jerk_lim: 0.3 # [m/s^3]
