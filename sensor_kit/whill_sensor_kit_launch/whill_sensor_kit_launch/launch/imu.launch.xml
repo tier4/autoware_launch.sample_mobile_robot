@@ -1,7 +1,6 @@
 <launch>
   <arg name="launch_driver" default="true"/>
-  <arg name="interface" default="can1"/>
-  <arg name="receiver_interval_sec" default="0.01"/>
+  <arg name="port" default="/dev/ttyS1"/>
   <arg name="param_file" default="$(find-pkg-share whill_sensor_kit_description)/config/imu_corrector.param.yaml"/>
 
   <group>
@@ -10,7 +9,7 @@
       <push-ros-namespace namespace="tamagawa"/>
       <node pkg="tamagawa_imu_driver" name="tag_serial_driver" exec="tag_serial_driver">
         <remap from="imu/data_raw" to="imu_raw"/>
-        <param name="port" value="/dev/ttyS1"/>
+        <param name="port" value="$(var port)"/>
         <param name="imu_frame_id" value="imu_link"/>
       </node>
     </group>
