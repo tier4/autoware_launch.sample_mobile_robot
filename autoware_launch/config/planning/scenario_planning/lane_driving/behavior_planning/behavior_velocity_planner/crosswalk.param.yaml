@@ -33,9 +33,9 @@
         target_vehicle_velocity: 1.0 # [m/s] threshold velocity whether other vehicles are assumed to be stuck or not.
         max_target_vehicle_lateral_offset: 2.0 # [m] The feature does not handle the vehicles farther than this value to the ego's path.
         required_clearance: 6.0 # [m] clearance to be secured between the ego and the ahead vehicle
-        min_acc: -1.2 # min acceleration [m/ss]
-        min_jerk: -1.2 # min jerk [m/sss]
-        max_jerk: 1.2 # max jerk [m/sss]
+        min_acc: -1.0 # min acceleration [m/ss]
+        min_jerk: -1.0 # min jerk [m/sss]
+        max_jerk: 1.0 # max jerk [m/sss]
 
       # params for the pass judge logic against the crosswalk users such as pedestrians or bicycles
       pass_judge:
@@ -53,6 +53,7 @@
           enable_no_stop_decision: true
           min_acc: -1.5 # min acceleration [m/ss]
           min_jerk: -1.5 # min jerk [m/sss]
+          overrun_threshold_length: 1.0 # [m] required to avoid giving up against backward movement of the stop position due to approaching pedestrians, etc.
 
         stop_object_velocity_threshold: 0.25 # [m/s] velocity threshold for the module to judge whether the objects is stopped (0.25 m/s = 0.9 kmph)
         min_object_velocity: 1.39 # [m/s] minimum object velocity (compare the estimated velocity by perception module with this parameter and adopt the larger one to calculate TTV. 1.39 m/s = 5.0 kmph)
@@ -80,7 +81,7 @@
 
       # param for occlusions
       occlusion:
-        enable: false # if true, ego will slowdown around crosswalks that are occluded
+        enable: true  # if true, ego will slowdown around crosswalks that are occluded
         occluded_object_velocity: 2.0 # [m/s] assumed velocity of objects that may come out of the occluded space
         slow_down_velocity: 1.0  # [m/s]
         time_buffer: 0.5  # [s] consecutive time with/without an occlusion to add/remove the slowdown

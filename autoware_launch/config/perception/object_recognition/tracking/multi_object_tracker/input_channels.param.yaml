@@ -3,6 +3,8 @@
     input_channels:
       # Merged detected objects, i.e. "/perception/object_recognition/detection/objects"
       detected_objects:
+        topic: "/perception/object_recognition/detection/objects"
+        can_spawn_new_tracker: true
         optional:
           name: "detected_objects"
           short_name: "all"

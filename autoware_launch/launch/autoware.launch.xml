@@ -43,6 +43,7 @@
   <arg name="rviz_config_name" default="autoware.rviz" description="rviz config name"/>
   <arg name="rviz_config" default="$(find-pkg-share autoware_launch)/rviz/$(var rviz_config_name)" description="rviz config path"/>
   <arg name="rviz_respawn" default="true"/>
+  <arg name="joy_controller" default="true"/>
   <!-- Perception -->
   <arg name="perception_mode" default="lidar" description="select perception mode. camera_lidar_radar_fusion, camera_lidar_fusion, lidar_radar_fusion, lidar, radar"/>
   <arg name="traffic_light_recognition/use_high_accuracy_detection" default="true" description="enable to use high accuracy detection for traffic light recognition"/>
@@ -148,12 +149,18 @@
       pkg="rviz2"
       exec="rviz2"
       name="rviz2"
-      output="screen"
+      output="log"
       args="-d $(var rviz_config) -s $(find-pkg-share autoware_launch)/rviz/image/autoware.png"
       if="$(var rviz)"
       respawn="$(var rviz_respawn)"
     >
       <env name="QT_QPA_PLATFORMTHEME" value="qt5ct"/>
     </node>
+
+    <group if="$(var joy_controller)">
+      <include file="$(find-pkg-share autoware_joy_controller)/launch/joy_controller.launch.xml">
+        <arg name="external_cmd_source" value="local"/>
+      </include>
+    </group>
   </group>
 </launch>
