@@ -19,8 +19,8 @@ from launch_ros.descriptions import ComposableNode
 def generate_launch_description():
     # Topic Monitor For LiDAR
     topic_state_monitor_lidar_top = ComposableNode(
-        package="topic_state_monitor",
-        plugin="topic_state_monitor::TopicStateMonitorNode",
+        package="autoware_topic_state_monitor",
+        plugin="autoware::topic_state_monitor::TopicStateMonitorNode",
         name="topic_state_monitor_lidar_top",
         parameters=[
             {
@@ -39,8 +39,8 @@ def generate_launch_description():
 
     # Topic Monitor For IMU
     topic_state_monitor_imu = ComposableNode(
-        package="topic_state_monitor",
-        plugin="topic_state_monitor::TopicStateMonitorNode",
+        package="autoware_topic_state_monitor",
+        plugin="autoware::topic_state_monitor::TopicStateMonitorNode",
         name="topic_state_monitor_imu",
         parameters=[
             {
