@@ -36,7 +36,6 @@ def launch_setup(context, *args, **kwargs):
             {
                 "input_topics": [
                     "top/pointcloud_before_sync",
-                    <!-- "front/pointcloud_before_sync", -->
                 ],
                 "output_frame": LaunchConfiguration("base_frame"),
             }
