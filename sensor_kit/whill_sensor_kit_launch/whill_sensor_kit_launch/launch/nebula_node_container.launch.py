@@ -142,6 +142,8 @@ def launch_setup(context, *args, **kwargs):
                         "ptp_transport_type",
                         "ptp_switch_type",
                         "ptp_domain",
+                        "ptp_lock_threshold",
+                        "udp_only",
                         "diag_span",
                         "setup_sensor",
                         "retry_hw",
@@ -317,9 +319,12 @@ def generate_launch_description():
     add_launch_arg("ptp_transport_type", "UDP")
     add_launch_arg("ptp_switch_type", "TSN")
     add_launch_arg("ptp_domain", "0")
+    add_launch_arg("ptp_lock_threshold", "100")
+    add_launch_arg("udp_only", "false")
     add_launch_arg("diag_span", "1000")
     add_launch_arg("setup_sensor", "true")
     add_launch_arg("retry_hw", "true")
+    add_launch_arg("processing_time_threshold_sec", "0.01")
     add_launch_arg("output_as_sensor_frame", "True", "output final pointcloud in sensor frame")
     add_launch_arg("enable_blockage_diag", "false")
     add_launch_arg("horizontal_ring_id", "64")
