@@ -158,7 +158,7 @@ def launch_setup(context, *args, **kwargs):
         )
     )
 
-    cropbox_parameters = create_parameter_dict("input_frame", "output_frame")
+    cropbox_parameters = create_parameter_dict("input_frame", "output_frame", "processing_time_threshold_sec")
     cropbox_parameters["negative"] = True
 
     vehicle_info = get_vehicle_info(context)
