@@ -9,8 +9,8 @@ units:
 # camera
   - path: /autoware/sensing/camera/connection
     type: diag
-    node: topic_state_monitor_camera
-    name: camera_topic_status
+    node: topic_state_monitor_camera_front
+    name: camera_front_topic_status
     timeout: 1.0
 
 # top lidar

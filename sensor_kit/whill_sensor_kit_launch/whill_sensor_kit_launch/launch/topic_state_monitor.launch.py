@@ -37,6 +37,26 @@ def generate_launch_description():
         extra_arguments=[{"use_intra_process_comms": True}],
     )
 
+    # Topic Monitor For Camera
+    topic_state_monitor_camera_front = ComposableNode(
+        package="topic_state_monitor",
+        plugin="topic_state_monitor::TopicStateMonitorNode",
+        name="topic_state_monitor_camera_front",
+        parameters=[
+            {
+                "topic": "/sensing/camera/camera0/image_raw",
+                "topic_type": "sensor_msgs/msg/Image",
+                "best_effort": True,
+                "diag_name": "camera_front_topic_status",
+                "warn_rate": 5.0,
+                "error_rate": 1.0,
+                "timeout": 1.0,
+                "window_size": 10,
+            },
+        ],
+        extra_arguments=[{"use_intra_process_comms": True}],
+    )
+
     # Topic Monitor For IMU
     topic_state_monitor_imu = ComposableNode(
         package="topic_state_monitor",
@@ -65,6 +85,7 @@ def generate_launch_description():
         executable="component_container",
         composable_node_descriptions=[
             topic_state_monitor_lidar_top,
+            topic_state_monitor_camera_front,
             topic_state_monitor_imu,
         ],
         output="screen",
