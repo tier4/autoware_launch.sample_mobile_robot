@@ -9,11 +9,11 @@
 
     can_assign_matrix:
       #UNKNOWN, CAR, TRUCK, BUS, TRAILER, MOTORBIKE, BICYCLE, PEDESTRIAN <-roi_msg
-      [1,       0,   0,     0,   0,       0,         0,       0,         # UNKNOWN <-detected_objects
+      [1,       0,   0,     0,   0,       0,         1,       1,         # UNKNOWN <-detected_objects
        0,       1,   1,     1,   1,       0,         0,       0,         # CAR
        0,       1,   1,     1,   1,       0,         0,       0,         # TRUCK
        0,       1,   1,     1,   1,       0,         0,       0,         # BUS
        0,       1,   1,     1,   1,       0,         0,       0,         # TRAILER
        0,       0,   0,     0,   0,       1,         1,       1,         # MOTORBIKE
-       0,       0,   0,     0,   0,       1,         1,       1,         # BICYCLE
-       0,       0,   0,     0,   0,       1,         1,       1]         # PEDESTRIAN
+       1,       0,   0,     0,   0,       1,         1,       1,         # BICYCLE
+       1,       0,   0,     0,   0,       1,         1,       1]         # PEDESTRIAN
