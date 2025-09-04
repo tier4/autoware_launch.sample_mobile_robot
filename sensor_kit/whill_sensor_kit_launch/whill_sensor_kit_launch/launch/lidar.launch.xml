@@ -15,6 +15,7 @@
         <arg name="host_ip" value="192.168.1.100"/>
         <arg name="data_port" value="2368"/>
         <arg name="cut_angle" value="270.0" />
+        <arg name="sync_angle" value="270" /> 
         <arg name="cloud_min_angle" value="0"/>
         <arg name="cloud_max_angle" value="360"/>
         <arg name="dual_return_distance_threshold" value="0.1"/>

@@ -1,29 +1,27 @@
 <launch>
  <group>
     <push-ros-namespace namespace="camera"/>
-    <node pkg="gscam" exec="gscam_node" name="gscam" output="log">
-      <remap from="camera/camera_info" to="camera0/camera_info"/>
-      <remap from="camera/image_raw" to="camera0/image_raw"/>
-      <remap from="camera/image_raw/compressed" to="camera0/image_raw/compressed"/>
-      <remap from="camera/image_raw/compressedDepth" to="camera0/image_raw/compressedDepth"/>
-      <remap from="camera/image_raw/theora" to="camera0/image_raw/theora"/>
-
-      <param name="camera_name" value="camera0"/>
-      <param name="camera_info_url" value="package://whill_sensor_kit_launch/data/camera0_info.yaml"/>
-      <param name="gscam_config" value="udpsrc port=5004 ! application/x-rtp, sampling=YCbCr-4:2:2, depth=(string)8, width=(string)1920, height=(string)1280 ! rtpvrawdepay ! videoconvert ! queue"/>
+    
+    <node pkg="video_receiver" exec="video_receiver" name="rtp_video_receiver_node" output="log">
+      <param name="ip" value="10.42.0.100"/>
+      <param name="port" value="5004"/>
+      <param name="topic" value="camera0/image_raw"/>
       <param name="frame_id" value="camera0/camera_optical_link"/>
-      <param name="reopen_on_eof" value="false"/>
-      <param name="sync_sink" value="false"/>
-      <param name="use_gst_timestamp" value="true"/>
-      <param name="image_encoding" value="rgb8"/>
-      <param name="use_sensor_data_qos" value="false"/>
+      <param name="width" value="1920"/>
+      <param name="height" value="1280"/>
+      <param name="timestamp_config" value="1"/>
     </node>
+
+    <include file="$(find-pkg-share camera_info_publisher)/launch/camera_info_publisher.launch.xml">
+      <arg name="camera_name" value="camera0"/>
+      <arg name="camera_info_file" value="$(find-pkg-share whill_sensor_kit_launch)/data/camera0_info.yaml"/>
+    </include>
 
     <node pkg="image_proc" exec="rectify_node" name="rectify_node" output="log">
       <remap from="camera_info" to="camera0/camera_info"/>
       <remap from="image" to="camera0/image_raw"/>
       <remap from="image_rect" to="camera0/image_rect_color"/>
-      <remap from="image_rect/compressed" to="camera0/image_rect_color/compressed_unused"/>
+      <remap from="image_rect/compressed" to="camera0/image_rect_color/compressed"/>
       <remap from="image_rect/compressedDepth" to="camera0/image_rect_color/compressedDepth"/>
       <remap from="image_rect/theora" to="camera0/image_rect_color/theora"/>
     </node>
