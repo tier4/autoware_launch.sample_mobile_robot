@@ -55,6 +55,28 @@
     <arg name="traffic_light_recognition/fusion_only" value="false"/>
     <arg name="all_traffic_light_camera" value="$(var all_traffic_light_camera)"/>
 
+    <arg name="image_raw1" value=""/>
+    <arg name="camera_info1" value=""/>
+    <arg name="detection_rois1" value=""/>
+    <arg name="image_raw2" value=""/>
+    <arg name="camera_info2" value=""/>
+    <arg name="detection_rois2" value=""/>
+    <arg name="image_raw3" value=""/>
+    <arg name="camera_info3" value=""/>
+    <arg name="detection_rois3" value=""/>
+    <arg name="image_raw4" value=""/>
+    <arg name="camera_info4" value=""/>
+    <arg name="detection_rois4" value=""/>
+    <arg name="image_raw5" value=""/>
+    <arg name="camera_info5" value=""/>
+    <arg name="detection_rois5" value=""/>
+    <arg name="image_raw6" value=""/>
+    <arg name="camera_info6" value=""/>
+    <arg name="detection_rois6" value=""/>
+    <arg name="image_raw7" value=""/>
+    <arg name="camera_info7" value=""/>
+    <arg name="detection_rois7" value=""/>
+
     <!-- object recognition parameters -->
     <arg name="image_number" value="1"/>
     <arg
