@@ -153,7 +153,7 @@ def launch_setup(context, *args, **kwargs):
     nodes.append(
         ComposableNode(
             package="autoware_crop_box_filter",
-            plugin="autoware::crop_box_filter::CropBoxFilter",
+            plugin="autoware::crop_box_filter::CropBoxFilterNode",
             name="crop_box_filter_self",
             remappings=[
                 ("input", "pointcloud_raw_ex"),
@@ -175,7 +175,7 @@ def launch_setup(context, *args, **kwargs):
     nodes.append(
         ComposableNode(
             package="autoware_crop_box_filter",
-            plugin="autoware::crop_box_filter::CropBoxFilter",
+            plugin="autoware::crop_box_filter::CropBoxFilterNode",
             name="crop_box_filter_mirror",
             remappings=[
                 ("input", "self_cropped/pointcloud_ex"),
