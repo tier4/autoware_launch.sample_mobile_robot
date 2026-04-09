@@ -23,10 +23,7 @@ from launch.conditions import IfCondition
 from launch.conditions import UnlessCondition
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import ComposableNodeContainer
-from launch_ros.actions import LoadComposableNodes
 from launch_ros.descriptions import ComposableNode
-from launch_ros.parameter_descriptions import ParameterFile
-import yaml
 
 
 def get_lidar_make(sensor_name):
@@ -37,13 +34,6 @@ def get_lidar_make(sensor_name):
     elif sensor_name.lower() in ["helios", "bpearl"]:
         return "Robosense", None
     return "unrecognized_sensor_model"
-
-
-def get_vehicle_mirror_info(context):
-    path = LaunchConfiguration("vehicle_mirror_param_file").perform(context)
-    with open(path, "r") as f:
-        p = yaml.safe_load(f)["/**"]["ros__parameters"]
-    return p
 
 
 def launch_setup(context, *args, **kwargs):
@@ -173,10 +163,6 @@ def generate_launch_description():
     add_launch_arg("vertical_bins", "128")
     add_launch_arg("is_channel_order_top2down", "true")
     add_launch_arg("horizontal_resolution", "0.4")
-    add_launch_arg("base_frame", "base_link", "base frame id")
-    add_launch_arg("input_pointcloud_frame", LaunchConfiguration("base_frame"), "use for cropbox")
-    add_launch_arg("input_frame", LaunchConfiguration("base_frame"), "use for cropbox")
-    add_launch_arg("output_frame", LaunchConfiguration("base_frame"), "use for cropbox")
     add_launch_arg("use_multithread", "False", "use multithread")
     add_launch_arg("use_intra_process", "False", "use ROS 2 component container communication")
     add_launch_arg("use_pointcloud_container", "false")
