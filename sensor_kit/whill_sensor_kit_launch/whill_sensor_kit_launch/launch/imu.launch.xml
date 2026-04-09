@@ -1,5 +1,4 @@
 <launch>
-  <arg name="launch_driver" default="true"/>
   <arg name="interface" default="can1"/>
   <arg name="receiver_interval_sec" default="0.01"/>
   <arg name="param_file" default="$(find-pkg-share whill_sensor_kit_description)/config/imu_corrector.param.yaml"/>
